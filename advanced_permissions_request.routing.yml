@@ -5,3 +5,11 @@ advanced_permissions_request.settings_form:
     _form: 'Drupal\advanced_permissions_request\Form\SettingsForm'
   requirements:
     _permission: 'administer advanced_permissions_request configuration'
+
+advanced_permissions_request.request_role:
+  path: '/user/{user}/request-roles'
+  defaults:
+    _title: 'Request new role'
+    _form: 'Drupal\advanced_permissions_request\Form\RequestRoleForm'
+  requirements:
+    _user_is_logged_in: 'TRUE'
