@@ -1,0 +1,6 @@
+advanced_permissions_request.settings_form:
+  title: 'Advanced permissions request'
+  description: 'Configure Advanced permissions request.'
+  parent: system.admin_config_system
+  route_name: advanced_permissions_request.settings_form
+  weight: 10

@@ -1,0 +1,7 @@
+name: Advanced permissions request
+type: module
+description: This module allows users to request elevated permissions from site administrators, enabling them to access additional functionalities and content. Users can apply for special roles with extended privileges based on their requirements and responsibilities
+package: Administration
+core_version_requirement: ^9 || ^10
+dependencies:
+  - drupal:toolbar

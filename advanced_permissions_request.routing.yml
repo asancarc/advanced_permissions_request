@@ -1,0 +1,7 @@
+advanced_permissions_request.settings_form:
+  path: '/admin/config/system/advanced-permissions-request'
+  defaults:
+    _title: 'Advanced permissions request settings'
+    _form: 'Drupal\advanced_permissions_request\Form\SettingsForm'
+  requirements:
+    _permission: 'administer advanced_permissions_request configuration'

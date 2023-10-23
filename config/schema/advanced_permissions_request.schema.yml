@@ -1,0 +1,8 @@
+# Schema for the configuration files of the Advanced permissions request module.
+advanced_permissions_request.settings:
+  type: config_object
+  label: 'Advanced permissions request settings'
+  mapping:
+    roles_to_offer:
+      type: checkboxes
+      label: 'Please select what roles offer to users'
