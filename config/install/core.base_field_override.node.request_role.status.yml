@@ -1,0 +1,22 @@
+uuid: 954caf8d-39cb-4e6a-ba50-606739878e14
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.request_role
+id: node.request_role.status
+field_name: status
+entity_type: node
+bundle: request_role
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
