@@ -95,6 +95,21 @@ class Service {
   }
 
   /**
+   * GetAllRolesFromSystem function.
+   *
+   * @return array
+   *   With the roles can request.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function getAllRolesFromSystem() {
+    $rolesAvailable = $this->manager->getStorage('user_role')->loadMultiple();
+    $rolesAvailable = $this->getRolesArrayCleared($rolesAvailable);
+    return $rolesAvailable;
+  }
+
+  /**
    * GetRolesArrayCleared function.
    *
    *   Create array with a defined structure with role_id and role label and

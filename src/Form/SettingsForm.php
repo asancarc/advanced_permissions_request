@@ -56,22 +56,26 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Get all roles from the system and remove basic roles.
     $entityType = $this->service->getEntityTypeMananger();
     $roles = $entityType->getStorage('user_role')->loadMultiple();
+    unset($roles["anonymous"]);
+    unset($roles["authenticated"]);
 
-    $roles_array = [];
-
+    // Create array cleared with roles to offer.
+    $rolesToOffer = [];
     foreach ($roles as $role) {
-      $roles_array[$role->id()] = $role->label();
+      $rolesToOffer[$role->id()] = $role->label();
     }
 
+    // Get default values from config.
     $config = $this->config('advanced_permissions_request.settings');
     $selectedValues = $config->get('roles_to_offer');
 
     $form['roles_to_offer'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Please select what roles offer to users'),
-      '#options' => $roles_array,
+      '#options' => $rolesToOffer,
       '#default_value' => $selectedValues,
     ];
 
@@ -82,9 +86,22 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->config('advanced_permissions_request.settings')
-      ->set('roles_to_offer', $form_state->getValue('roles_to_offer'))
-      ->save();
+
+    // Check if any option is selected.
+    $rolesToOffer = array_filter($form_state->getValue('roles_to_offer'));
+
+    if (count($rolesToOffer) != 0) {
+      // If all values are 0, no values checked.
+      $this->config('advanced_permissions_request.settings')
+        ->set('roles_to_offer', $rolesToOffer)
+        ->save();
+    }
+    else {
+      $this->config('advanced_permissions_request.settings')
+        ->set('roles_to_offer', NULL)
+        ->save();
+    }
+
     parent::submitForm($form, $form_state);
   }
 
