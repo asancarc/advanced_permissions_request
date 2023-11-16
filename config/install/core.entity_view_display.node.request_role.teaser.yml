@@ -1,19 +1,25 @@
+uuid: efd89a35-6ea8-4243-a48e-0674cc9e578a
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.request_role.field_actual_roles
     - field.field.node.request_role.field_role
     - field.field.node.request_role.field_user
     - node.type.request_role
   module:
     - user
+_core:
+  default_config_hash: Vow5c_8QlzRJJz8LixyD4ruos_6Xn4tVCJBqcd4vpIc
 id: node.request_role.teaser
 targetEntityType: node
 bundle: request_role
 mode: teaser
 content: {  }
 hidden:
+  field_actual_roles: true
   field_role: true
   field_user: true
+  langcode: true
   links: true

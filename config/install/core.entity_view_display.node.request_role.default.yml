@@ -1,18 +1,31 @@
+uuid: f1a27eca-f8fe-419e-a25a-6fb310df4f9d
 langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.request_role.field_actual_roles
     - field.field.node.request_role.field_role
     - field.field.node.request_role.field_user
     - node.type.request_role
   module:
     - user
+_core:
+  default_config_hash: qcLmkfEOJftUt1rUNraGSGrTytA_Wdbn-bQmXkIeqmQ
 id: node.request_role.default
 targetEntityType: node
 bundle: request_role
 mode: default
-content: {  }
+content:
+  field_actual_roles:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   field_role: true
   field_user: true
+  langcode: true
   links: true

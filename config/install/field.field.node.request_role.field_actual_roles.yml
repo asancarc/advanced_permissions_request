@@ -1,0 +1,23 @@
+uuid: 9bd560d0-cb0b-4a2b-b056-b18cbe7c47fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_actual_roles
+    - node.type.request_role
+id: node.request_role.field_actual_roles
+field_name: field_actual_roles
+entity_type: node
+bundle: request_role
+label: 'Actual roles'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user_role'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference
