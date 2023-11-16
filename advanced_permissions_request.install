@@ -9,9 +9,13 @@
  * Implements hook_uninstall().
  */
 function advanced_permissions_request_uninstall() {
-  // Delete request_role nodes and content type.
+  // Delete request_role nodes, content type and view.
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $nodes = $node_storage->loadByProperties(['type' => 'request_role']);
+  // Wip, check if $nodes exists.
   $node_storage->delete($nodes);
+  // Delete content type structure.
   \Drupal::entityTypeManager()->getStorage('node_type')->load('request_role')->delete();
+  // Delete view.
+  \Drupal::service('config.factory')->getEditable('views.view.role_requests' . "role_request_view")->delete();
 }
