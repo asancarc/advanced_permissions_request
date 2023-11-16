@@ -295,7 +295,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<a href="/advanced-permissions-request/{{ nid }}/accept" class="button button--action button--primary">Accept</a>    |    <a href="advanced-permissions-request/{{ nid }}/denny" class="button button--action button--primary">Denny</a>'
+            text: '<a href="/advanced-permissions-request/{{ nid }}/accept" class="button button--primary">Accept</a>        <a href="advanced-permissions-request/{{ nid }}/denny" class="button button--secondary">Denny</a>'
             make_link: false
             path: ''
             absolute: false
