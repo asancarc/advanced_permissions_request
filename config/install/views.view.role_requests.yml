@@ -11,7 +11,7 @@ dependencies:
     - node
     - user
 _core:
-  default_config_hash: G_Kx3JicceQHJOSlb63LYyR5rdpMhfJJPnWW5OTSgd4
+  default_config_hash: D_Cqvnfa6G6ijhvdBNGynwMTDYvZFZe3nMwLoqLrFHY
 id: role_requests
 label: 'Role requests'
 module: views
@@ -295,7 +295,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<a href="/advanced-permissions-request/{{ nid }}/accept">Accept</a>    |    <a href="advanced-permissions-request/{{ nid }}/denny">Denny</a>'
+            text: '<a href="/advanced-permissions-request/{{ nid }}/accept" class="button button--action button--primary">Accept</a>    |    <a href="advanced-permissions-request/{{ nid }}/denny" class="button button--action button--primary">Denny</a>'
             make_link: false
             path: ''
             absolute: false
