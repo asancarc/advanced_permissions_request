@@ -1,10 +1,11 @@
-uuid: 97fd1232-0947-4de5-87e5-da325a50618a
 langcode: en
 status: true
 dependencies:
   module:
     - node
     - user
+_core:
+  default_config_hash: _m72sn2LTLzMtYwDV1g2Dngn1473HPV7F6gFb6d51R8
 id: node.field_actual_roles
 field_name: field_actual_roles
 entity_type: node
@@ -13,7 +14,7 @@ settings:
   target_type: user_role
 module: core
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
