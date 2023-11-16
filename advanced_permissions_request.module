@@ -14,18 +14,25 @@ function advanced_permissions_request_form_user_form_alter(&$form) {
 
   // Check user roles, if is admin, don´t show button.
   $rolesLoguedUser = implode(",", \Drupal::currentUser()->getRoles());
+  $userId = \Drupal::currentUser()->id();
 
   // Check if user has any roleRequeste openned.
   $userRequested = advanced_permissions_request_check_user_roles_request();
 
   if ($rolesToOffer != NULL && !str_contains($rolesLoguedUser, 'administrator') && $userRequested != TRUE) {
-    $userId = \Drupal::currentUser()->id();
     $mesage = "<a class='button button--primary' href=/user/" . $userId . "/request-roles>Request new roles</a>";
     $form['request_role'] = [
       '#type' => "markup",
       '#markup' => $mesage,
       '#weight' => -100,
     ];
+  }
+  else {
+    /*
+    $newRole = reset($userRequested['field_request_role']);
+    $newRole = $newRole['target_id'];
+     */
+    $mesage = "<a class='wt-link wt-ecl-button wt-ecl-button--primary' href=/user-management/$userId/denny>You have pending old request to $rolesConverstion[$newRole], do you want to cancel</a>";
   }
 
 }

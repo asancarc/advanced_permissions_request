@@ -138,7 +138,6 @@ class Service {
     return $rolesCleared;
   }
 
-  // WIP.
   /**
    * CreateRequestRoleContentType.
    *
