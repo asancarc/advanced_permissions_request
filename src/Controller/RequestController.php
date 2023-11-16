@@ -111,7 +111,7 @@ final class RequestController extends ControllerBase {
     $node_storage = $this->entityTypeManager->getStorage('node');
     $node = $node_storage->load($node);
 
-    $user = $node->get('field_request_user');
+    $user = $node->get('field_user');
     $userUid = $user->getString();
 
     $user_storage = $this->entityTypeManager->getStorage('user')
