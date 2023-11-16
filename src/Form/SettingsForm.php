@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\advanced_permissions_request\Form;
 
 use Drupal\advanced_permissions_request\Service;

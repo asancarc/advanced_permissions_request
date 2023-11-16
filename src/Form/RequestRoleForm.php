@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\advanced_permissions_request\Form;
 
 use Drupal\advanced_permissions_request\Service;
@@ -68,20 +70,20 @@ class RequestRoleForm extends FormBase {
 
     if ($roleToOffer != NULL) {
       $account = $this->service->userLoadFromUid(intval($user));
-      
+
       $this->userRequest = $account;
 
       /*
       // If user has only one role, is only authenticated, not show.
       if (count($rolesUser) > 0) {
-        $form['message'] = [
-          '#type' => 'radios',
-          '#title' => $this->t("Now, you have this roles"),
-          '#options' => $rolesUser,
-          '#disabled' => FALSE,
-        ];
+      $form['message'] = [
+      '#type' => 'radios',
+      '#title' => $this->t("Now, you have this roles"),
+      '#options' => $rolesUser,
+      '#disabled' => FALSE,
+      ];
       }
-      */
+       */
 
       $rolesUser = $this->service->getRolesFromUser($account);
       $rolesAvailable = $this->service->getAllRolesFromSystem();
@@ -117,7 +119,7 @@ class RequestRoleForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     /*if (mb_strlen($form_state->getValue('message')) < 10) {
-      $form_state->setErrorByName('message', $this->t('Message should be at least 10 characters.'));
+    $form_state->setErrorByName('message', $this->t('Message should be at least 10 characters.'));
     }*/
   }
 
@@ -127,7 +129,6 @@ class RequestRoleForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->messenger()->addStatus($this->t('The message has been sent.'));
     $form_state->setRedirect('<front>');
-    // WIP
     $requestRole = $form_state->getValue('roles');
     $this->service->createRequestRoleContentType($requestRole, $this->userRequest);
     $form_state->setRedirect('entity.user.canonical', ['user' => $this->currentUser->id()]);

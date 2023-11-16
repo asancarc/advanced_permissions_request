@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\advanced_permissions_request;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -51,7 +53,7 @@ class Service {
    * @param int $account
    *   The uid from user.
    *
-   * @return EntityInterface
+   * @return \Drupal\Core\Entity\EntityInterface
    *   User entity.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -127,7 +129,6 @@ class Service {
     $rolesToExclude = [
       'anonymous',
       'authenticated',
-      'administrator',
     ];
 
     foreach ($roles as $role) {
