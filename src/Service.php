@@ -95,6 +95,21 @@ class Service {
   }
 
   /**
+   * GetAllRolesFromSystem function.
+   *
+   * @return array
+   *   With the roles can request.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function getAllRolesFromSystem() {
+    $rolesAvailable = $this->manager->getStorage('user_role')->loadMultiple();
+    $rolesAvailable = $this->getRolesArrayCleared($rolesAvailable);
+    return $rolesAvailable;
+  }
+
+  /**
    * GetRolesArrayCleared function.
    *
    *   Create array with a defined structure with role_id and role label and
@@ -121,6 +136,30 @@ class Service {
       }
     }
     return $rolesCleared;
+  }
+
+  // WIP.
+  /**
+   * CreateRequestRoleContentType.
+   *
+   * @param string $requestRole
+   *   String with role selected by user (machine name).
+   * @param \Drupal\user\Entity\User $userRequestNewRole
+   *   Object of current user.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function createRequestRoleContentType(string $requestRole, User $userRequestNewRole) {
+    $newRequest = $this->manager->getStorage('node')->create([
+      'type' => 'request_role',
+      'title' => 'Request role for: ' . $userRequestNewRole->label(),
+      'field_user' => $userRequestNewRole->id(),
+      'field_role' => $requestRole,
+      'status' => '0',
+      'field_actual_roles' => $userRequestNewRole->getRoles(),
+    ]);
+    $newRequest->save();
+
   }
 
 }

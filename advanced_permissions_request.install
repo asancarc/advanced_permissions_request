@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Advanced permissions request.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function advanced_permissions_request_uninstall() {
+  // Delete request_role nodes and content type.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $nodes = $node_storage->loadByProperties(['type' => 'request_role']);
+  $node_storage->delete($nodes);
+  \Drupal::entityTypeManager()->getStorage('node_type')->load('request_role')->delete();
+}

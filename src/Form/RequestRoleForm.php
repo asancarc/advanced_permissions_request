@@ -2,11 +2,11 @@
 
 namespace Drupal\advanced_permissions_request\Form;
 
+use Drupal\advanced_permissions_request\Service;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\advanced_permissions_request\Service;
 
 /**
  * Provides a Advanced permissions request form.
@@ -37,7 +37,7 @@ class RequestRoleForm extends FormBase {
   /**
    * Class constructor.
    */
-  public function __construct(Service $service, AccountProxyInterface $current_user) {    
+  public function __construct(Service $service, AccountProxyInterface $current_user) {
     $this->service = $service;
     $this->currentUser = $current_user;
   }
@@ -46,7 +46,7 @@ class RequestRoleForm extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(      
+    return new static(
       $container->get('advanced_permissions_request.service'),
       $container->get('current_user')
     );
@@ -64,42 +64,61 @@ class RequestRoleForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $user = NULL) {
 
-    $account = $this->service->userLoadFromUid(intval($user));
+    $roleToOffer = \Drupal::config('advanced_permissions_request.settings')->get('roles_to_offer');
 
-    $this->userRequest = $account;
+    if ($roleToOffer != NULL) {
+      $account = $this->service->userLoadFromUid(intval($user));
+      
+      $this->userRequest = $account;
 
-    $rolesUser = $this->service->getRolesFromUser($account);
+      /*
+      // If user has only one role, is only authenticated, not show.
+      if (count($rolesUser) > 0) {
+        $form['message'] = [
+          '#type' => 'radios',
+          '#title' => $this->t("Now, you have this roles"),
+          '#options' => $rolesUser,
+          '#disabled' => FALSE,
+        ];
+      }
+      */
 
-    //if (count($rolesUser) > 0) {
-      $form['message'] = [
+      $rolesUser = $this->service->getRolesFromUser($account);
+      $rolesAvailable = $this->service->getAllRolesFromSystem();
+      /*
+       *  Compare roles from system with roles from user to offer only
+       *  differences.
+       */
+      $rolesToRequest = array_diff($rolesAvailable, $rolesUser);
+
+      $advice = 'You can select one new role to request';
+      $form['roles'] = [
         '#type' => 'radios',
-        '#title' => $this->t("Now, you have this roles"),
-        '#options' => $rolesUser,
-        '#disabled' => TRUE,
-        // Disable, hide text.
+        '#title' => $this->t('Select one role'),
+        '#options' => $rolesToRequest,
+        '#description' => $advice,
       ];
-    //}
 
-    $advice = 'You can select one new role to request';
+      $form['actions'] = [
+        '#type' => 'actions',
+      ];
+      $form['actions']['submit'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Send'),
+      ];
 
-    $form['actions'] = [
-      '#type' => 'actions',
-    ];
-    $form['actions']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Send'),
-    ];
+      return $form;
+    }
 
-    return $form;
   }
 
   /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    if (mb_strlen($form_state->getValue('message')) < 10) {
+    /*if (mb_strlen($form_state->getValue('message')) < 10) {
       $form_state->setErrorByName('message', $this->t('Message should be at least 10 characters.'));
-    }
+    }*/
   }
 
   /**
@@ -108,6 +127,10 @@ class RequestRoleForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->messenger()->addStatus($this->t('The message has been sent.'));
     $form_state->setRedirect('<front>');
+    // WIP
+    $requestRole = $form_state->getValue('roles');
+    $this->service->createRequestRoleContentType($requestRole, $this->userRequest);
+    $form_state->setRedirect('entity.user.canonical', ['user' => $this->currentUser->id()]);
   }
 
 }

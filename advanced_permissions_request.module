@@ -5,16 +5,52 @@
  * Primary module hooks for Advanced permissions request module.
  */
 
-
- /**
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function advanced_permissions_request_form_user_form_alter(&$form) {
+  // Check if config form has any value.
+  $rolesToOffer = \Drupal::config('advanced_permissions_request.settings')->get('roles_to_offer');
+
+  // Check user roles, if is admin, don´t show button.
+  $rolesLoguedUser = implode(",", \Drupal::currentUser()->getRoles());
+
+  // Check if user has any roleRequeste openned.
+  $userRequested = advanced_permissions_request_check_user_roles_request();
+
+  if ($rolesToOffer != NULL && !str_contains($rolesLoguedUser, 'administrator') && $userRequested != TRUE) {
     $userId = \Drupal::currentUser()->id();
     $mesage = "<a class='button button--primary' href=/user/" . $userId . "/request-roles>Request new roles</a>";
     $form['request_role'] = [
-        '#type' => "markup",
-        '#markup' => $mesage,
-        '#weight' => -100,
+      '#type' => "markup",
+      '#markup' => $mesage,
+      '#weight' => -100,
     ];
+  }
+
+}
+
+/**
+ * Advanced permissions request check user roles request function.
+ *
+ *   This function check if user has any RoleRequest awaiting.
+ *
+ * @return bool
+ *   If user has any ROle await return TRUE if not return FALSE
+ */
+function advanced_permissions_request_check_user_roles_request() {
+
+  // Check if this user has any Role request openned.
+  $entityTypeManager = \Drupal::entityTypeManager()->getStorage('node');
+  $userId = \Drupal::currentUser()->id();
+  $query = $entityTypeManager->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('type', 'request_role')
+    ->condition('uid', $userId)
+    ->condition('status', '0');
+  $nid = $query->execute();
+  $nid = reset($nid);
+  $node = $entityTypeManager->load($nid);
+  $value = $node ? TRUE : FALSE;
+  return $value;
 }
