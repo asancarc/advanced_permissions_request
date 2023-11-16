@@ -73,10 +73,10 @@ final class RequestController extends ControllerBase {
     $node->set('uid', $this->currentUser->id());
     $node->save();
 
-    $roleRequest = $node->get('field_request_role');
+    $roleRequest = $node->get('field_role');
     $roleRequest = $roleRequest->getString();
 
-    $user = $node->get('field_request_user');
+    $user = $node->get('field_user');
     $userUid = $user->getString();
 
     $user_storage = $this->entityTypeManager->getStorage('user')
