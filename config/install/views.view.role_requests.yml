@@ -11,7 +11,7 @@ dependencies:
     - node
     - user
 _core:
-  default_config_hash: Guor75s8K9JFBZGVoCylwXMo-6R08b6r4kks66gZAbs
+  default_config_hash: Sewsp7fBHD2qt8cD1KxDBlPUQwWMODOfCplOUJqwZ4k
 id: role_requests
 label: 'Role requests'
 module: views
@@ -253,7 +253,20 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'There is nothing to show'
+            format: basic_html
+          tokenize: false
       sorts:
         created:
           id: created
@@ -358,6 +371,7 @@ display:
     display_options:
       display_extenders: {  }
       path: role-requests
+      use_admin_theme: true
     cache_metadata:
       max-age: -1
       contexts:

@@ -54,3 +54,13 @@ function advanced_permissions_request_check_user_roles_request() {
   $value = $node ? TRUE : FALSE;
   return $value;
 }
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function advanced_permissions_request_element_info_alter(array &$types) {
+  // Attach our extra CSS for toolbar icons.
+  if (isset($types['toolbar'])) {
+    $types['toolbar']['#attached']['library'][] = 'advanced_permissions_request/roles';
+  }
+}

@@ -1,0 +1,12 @@
+/**
+ * @file
+ * Styling for the user module icons.
+ */
+
+/**
+ * Toolbar tab icon.
+ */
+.toolbar-bar .toolbar-icon-advanced-permissions-request-request-roles:before,
+.toolbar-bar .toolbar-icon-advanced-permissions-request-request-roles.is-active:before {
+  background-image: url(../icons/icons8-duty-64.png);
+}

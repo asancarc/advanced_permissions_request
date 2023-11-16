@@ -4,3 +4,8 @@ advanced_permissions_request.settings_form:
   parent: system.admin_config_system
   route_name: advanced_permissions_request.settings_form
   weight: 10
+advanced_permissions_request.request_roles:
+  title: 'Role requests'
+  weight: 100
+  route_name: view.role_requests.role_request_view
+  parent: system.admin
