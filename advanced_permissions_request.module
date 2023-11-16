@@ -43,7 +43,7 @@ function advanced_permissions_request_form_user_form_alter(&$form) {
  *   This function check if user has any RoleRequest awaiting.
  *
  * @return bool
- *   If user has any ROle await return TRUE if not return FALSE
+ *   If user has any Role await return TRUE if not return FALSE
  */
 function advanced_permissions_request_check_user_roles_request() {
 

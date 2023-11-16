@@ -13,3 +13,19 @@ advanced_permissions_request.request_role:
     _form: 'Drupal\advanced_permissions_request\Form\RequestRoleForm'
   requirements:
     _user_is_logged_in: 'TRUE'
+
+advanced_permissions_request.accept:
+  path: '/advanced-permissions-request/{node}/accept'
+  defaults:
+    _title: 'New role request from user accepted'
+    _controller: '\Drupal\advanced_permissions_request\Controller\RequestController::acceptRequest'
+  requirements:
+    _permission: 'administer advanced_permissions_request configuration'
+
+advanced_permissions_request.denny:
+  path: '/advanced-permissions-request/{node}/denny'
+  defaults:
+    _title: 'New role request from user denied'
+    _controller: '\Drupal\advanced_permissions_request\Controller\RequestController::dennyRequest'
+  requirements:
+    _permission: 'administer advanced_permissions_request configuration'
