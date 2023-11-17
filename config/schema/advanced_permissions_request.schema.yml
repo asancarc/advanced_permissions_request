@@ -6,3 +6,13 @@ advanced_permissions_request.settings:
     roles_to_offer:
       type: checkboxes
       label: 'Please select what roles offer to users'
+advanced_permissions_request.advanced_permissions_request_request_role:
+  type: config_object
+  label: 'Request role form'
+  mapping:
+    message:
+      type: radios
+      label: 'Now, you have this roles'
+    roles:
+      type: radios
+      label: 'Select one role'
