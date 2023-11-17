@@ -1,0 +1,15 @@
+{
+    "name": "drupal/advanced_permissions_request",
+    "description": "This module allows users to request elevated permissions from site administrators, enabling them to access additional functionalities and content. Users can apply for special roles with extended privileges based on their requirements and responsibilities",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Adri Sanchez Carchano",
+            "homepage": "https://www.drupal.org/u/adrian-sanchez-carchano",
+            "role": "Maintainer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
