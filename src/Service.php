@@ -171,17 +171,15 @@ class Service {
    *   If user has any Role await return TRUE if not return FALSE
    */
   public function checkUserRolesRequest($userId) {
-
     // Check if this user has any Role request openned.
-    $entityTypeManager = \Drupal::entityTypeManager()->getStorage('node');
-    $query = $entityTypeManager->getQuery()
+    $nid = $this->manager->getStorage('node')->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'request_role')
       ->condition('uid', $userId)
-      ->condition('status', '0');
-    $nid = $query->execute();
+      ->condition('status', '0')
+      ->execute();
     $nid = reset($nid);
-    $node = $entityTypeManager->load($nid);
+    $node = $this->manager->getStorage('node')->load($nid);
     if (is_object($node)) {
       $role = $this->manager->getStorage('user_role')->load($node->get("field_role")->getValue()["0"]["target_id"]);
       $requestPending = [
