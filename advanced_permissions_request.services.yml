@@ -1,4 +1,4 @@
 services:
   advanced_permissions_request.service:
     class: Drupal\advanced_permissions_request\Service
-    arguments: ['@entity_type.manager', '@logger.factory']
+    arguments: ['@entity_type.manager', '@logger.factory', "@config.factory"]

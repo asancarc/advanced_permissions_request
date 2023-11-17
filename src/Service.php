@@ -4,14 +4,17 @@ declare(strict_types = 1);
 
 namespace Drupal\advanced_permissions_request;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service to include support functions for manage module.
  */
-class Service {
+class Service implements ContainerInjectionInterface {
 
   /**
    * The entity.type.manager service.
@@ -28,16 +31,43 @@ class Service {
   protected $logger;
 
   /**
+   * The configFactory service.
+   *
+   * @var \Symfony\Component\DependencyInjection\ContainerInterface
+   */
+  protected $configFactory;
+
+  /**
    * Constructs a Service object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $manager
    *   The entity.type.manager service.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
    *   The logger channel factory.
+   * @param \Drupal\Core\Config\ConfigFactory $config_factory
+   *   The logger channel factory.
    */
-  public function __construct(EntityTypeManagerInterface $manager, LoggerChannelFactoryInterface $logger) {
+  public function __construct(EntityTypeManagerInterface $manager, LoggerChannelFactoryInterface $logger, ConfigFactoryInterface $config_factory) {
     $this->manager = $manager;
     $this->logger = $logger;
+    $this->configFactory = $config_factory;
+  }
+
+  /**
+   * Creates an instance of the class.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The service container.
+   *
+   * @return static
+   *   A new instance of the class.
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('entity_type.manager'),
+      $container->get('logger.channel.default')
+    );
   }
 
   /**
@@ -188,6 +218,20 @@ class Service {
       ];
       return $requestPending;
     }
+
+  }
+
+  /**
+   * GetConfigRoles function.
+   *
+   *   Return roles allowed to request.
+   *
+   * @return array
+   *   With roles admin set allowed to user can request.
+   */
+  public function getConfigRoles() {
+    $rolesAllowed = $this->configFactory->get('roles_to_offer');
+    return $rolesAllowed;
 
   }
 

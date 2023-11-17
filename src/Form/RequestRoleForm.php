@@ -66,7 +66,7 @@ class RequestRoleForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $user = NULL) {
 
-    $roleToOffer = \Drupal::config('advanced_permissions_request.settings')->get('roles_to_offer');
+    $roleToOffer = $this->service->getConfigRoles();
 
     if ($roleToOffer != NULL) {
       $account = $this->service->userLoadFromUid(intval($user));
@@ -114,15 +114,6 @@ class RequestRoleForm extends FormBase {
       return $form;
     }
 
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    /*if (mb_strlen($form_state->getValue('message')) < 10) {
-    $form_state->setErrorByName('message', $this->t('Message should be at least 10 characters.'));
-    }*/
   }
 
   /**
