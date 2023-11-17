@@ -12,7 +12,8 @@
 
 ## INTRODUCTION
 
-The advanced permission request module provides users with the ability to request a higher system role from site admins.
+The advanced permission request module provides users with the 
+ability to request a higher system role from site admins.
 
 ## REQUIREMENTS
 

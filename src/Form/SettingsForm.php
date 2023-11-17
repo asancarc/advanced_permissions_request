@@ -18,7 +18,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * Service handler.
    *
-   * @var Drupal\advanced_permissions_request\Service
+   * @var \Drupal\advanced_permissions_request\Service
    */
   protected $service;
 

@@ -73,6 +73,7 @@ class RequestRoleForm extends FormBase {
 
       $this->userRequest = $account;
 
+      // WIP, try to show actual roles.
       /*
       // If user has only one role, is only authenticated, not show.
       if (count($rolesUser) > 0) {

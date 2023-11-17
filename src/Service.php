@@ -162,4 +162,35 @@ class Service {
 
   }
 
+  /**
+   * Advanced permissions request check user roles request function.
+   *
+   *   This function check if user has any RoleRequest awaiting.
+   *
+   * @return array|null
+   *   If user has any Role await return TRUE if not return FALSE
+   */
+  public function checkUserRolesRequest($userId) {
+
+    // Check if this user has any Role request openned.
+    $entityTypeManager = \Drupal::entityTypeManager()->getStorage('node');
+    $query = $entityTypeManager->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'request_role')
+      ->condition('uid', $userId)
+      ->condition('status', '0');
+    $nid = $query->execute();
+    $nid = reset($nid);
+    $node = $entityTypeManager->load($nid);
+    if (is_object($node)) {
+      $role = $this->manager->getStorage('user_role')->load($node->get("field_role")->getValue()["0"]["target_id"]);
+      $requestPending = [
+        "nid" => $nid,
+        "role" => $role->label(),
+      ];
+      return $requestPending;
+    }
+
+  }
+
 }

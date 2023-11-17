@@ -28,4 +28,4 @@ advanced_permissions_request.denny:
     _title: 'New role request from user denied'
     _controller: '\Drupal\advanced_permissions_request\Controller\RequestController::dennyRequest'
   requirements:
-    _permission: 'administer advanced_permissions_request configuration'
+   _user_is_logged_in: 'TRUE'
