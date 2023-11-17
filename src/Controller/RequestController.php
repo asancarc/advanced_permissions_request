@@ -120,10 +120,10 @@ final class RequestController extends ControllerBase {
       ]);
     $user_storage = reset($user_storage);
 
-    $module = 'user_management';
+    $module = 'advanced_permissions_request';
     $key = 'request_role';
     $userDestination = $user_storage->getEmail();
-    if ($user_storage->getEmail() != NULL) {
+    if ($user_storage != NULL) {
       $params = [];
       $params['message'] = "Dear user, your request to update roles to was denied ";
       $params['subject'] = 'Dennied your request role';

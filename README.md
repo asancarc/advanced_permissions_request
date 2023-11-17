@@ -51,6 +51,7 @@ The installation of this module is like other Drupal modules.
 3. At this point, administrators will have the discretion to decide whether or not to grant the role requested by the user.
   - If administrators grant the new role to the user, the created content will transition to a published state. 
   - To keep a record of which user has granted this new role, they will be recorded as the author of the last update to the relevant node.
+  - If site admins have declined the user's request, they will receive an email notification informing them of this.
 
 ## UNINSTALL
 

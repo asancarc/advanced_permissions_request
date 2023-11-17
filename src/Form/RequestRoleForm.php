@@ -72,22 +72,23 @@ class RequestRoleForm extends FormBase {
       $account = $this->service->userLoadFromUid(intval($user));
 
       $this->userRequest = $account;
+      $rolesUser = $this->service->getRolesFromUser($account);
 
       // WIP, try to show actual roles.
-      /*
       // If user has only one role, is only authenticated, not show.
-      if (count($rolesUser) > 0) {
+      /*
       $form['message'] = [
       '#type' => 'radios',
       '#title' => $this->t("Now, you have this roles"),
       '#options' => $rolesUser,
-      '#disabled' => FALSE,
+      '#disabled' => TRUE,
       ];
-      }
        */
 
+      // I need some helps, text not appear.
       $rolesUser = $this->service->getRolesFromUser($account);
       $rolesAvailable = $this->service->getAllRolesFromSystem();
+
       /*
        *  Compare roles from system with roles from user to offer only
        *  differences.
