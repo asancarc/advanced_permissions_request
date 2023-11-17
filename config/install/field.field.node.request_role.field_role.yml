@@ -4,11 +4,13 @@ dependencies:
   config:
     - field.storage.node.field_role
     - node.type.request_role
+_core:
+  default_config_hash: xeW3-AWgKwmLhK-rfSXC2Q4Gx9WbnrHU9uLgu-qmgNI
 id: node.request_role.field_role
 field_name: field_role
 entity_type: node
 bundle: request_role
-label: Role
+label: 'Role request'
 description: ''
 required: false
 translatable: false

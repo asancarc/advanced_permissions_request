@@ -38,8 +38,8 @@ display:
           entity_type: node
           entity_field: nid
           plugin_id: field
-          label: ID
-          exclude: false
+          label: ''
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -228,7 +228,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: Role
+          label: 'Role request'
           exclude: false
           alter:
             alter_text: false
