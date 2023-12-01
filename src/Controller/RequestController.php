@@ -120,20 +120,28 @@ final class RequestController extends ControllerBase {
       ]);
     $user_storage = reset($user_storage);
 
-    $module = 'advanced_permissions_request';
-    $key = 'request_role';
-    $userDestination = $user_storage->getEmail();
-    if ($user_storage != NULL) {
-      $params = [];
-      $params['message'] = "Dear user, your request to update roles to was denied ";
-      $params['subject'] = 'Dennied your request role';
-      $langcode = 'en';
-      $send = TRUE;
-      $result = $this->mailmanager->mail($module, $key, $userDestination, $langcode, $params, NULL, $send);
-      if ($result['result'] !== TRUE) {
-        $this->messenger()->addError('There was a problem sending your message and it was not sent.');
+    /*
+     If user was has canceled request was been the same from request content type,
+     is th userself who canceled, not send an email.
+     */
+    if ($this->currentUser->id() != $userUid) {
+      $module = 'advanced_permissions_request';
+      $key = 'request_role';
+
+      $userDestination = $user_storage->getEmail();
+      if ($user_storage != NULL) {
+        $params = [];
+        $params['message'] = "Dear user, your request to update roles to was denied ";
+        $params['subject'] = 'Dennied your request role';
+        $langcode = 'en';
+        $send = TRUE;
+        $result = $this->mailmanager->mail($module, $key, $userDestination, $langcode, $params, NULL, $send);
+        if ($result['result'] !== TRUE) {
+          $this->messenger()->addError('There was a problem sending your message and it was not sent.');
+        }
       }
     }
+
 
     $node->delete();
 

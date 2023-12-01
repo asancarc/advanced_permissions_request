@@ -23,7 +23,7 @@ function advanced_permissions_request_form_user_form_alter(&$form) {
     $mesage = "<a class='button button--primary' href=/user/" . $userId . "/request-roles>Request new roles</a>";
   }
   elseif (is_array($requestPending)) {
-    $mesage = "<a class='wt-link wt-ecl-button wt-ecl-button--primary' href=/advanced-permissions-request/" . $requestPending["nid"] . "/denny>You have pending old request to " . $requestPending["role"] . ", do you want to cancel</a>";
+    $mesage = "<a class='button button--primary' href=/advanced-permissions-request/" . $requestPending["nid"] . "/denny>You have pending old request to " . $requestPending["role"] . ", do you want to cancel</a>";
   }
 
   $form['request_role'] = [
