@@ -53,9 +53,9 @@ final class RequestController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
-      $container->get('plugin.manager.mail'),
-      $container->get('current_user')
+      $container->get("entity_type.manager"),
+      $container->get("plugin.manager.mail"),
+      $container->get("current_user")
     );
   }
 
@@ -66,27 +66,31 @@ final class RequestController extends ControllerBase {
    *   The id of node.
    */
   public function acceptRequest($node) {
-    $node_storage = $this->entityTypeManager->getStorage('node');
+    $node_storage = $this->entityTypeManager->getStorage("node");
     $node = $node_storage->load($node);
-    $node->set('status', '1');
+    $node->set("status", "1");
     $this->currentUser->id();
-    $node->set('uid', $this->currentUser->id());
+    $node->set("uid", $this->currentUser->id());
     $node->save();
 
-    $roleRequest = $node->get('field_role');
+    $roleRequest = $node->get("field_role");
     $roleRequest = $roleRequest->getString();
 
-    $user = $node->get('field_user');
+    $user = $node->get("field_user");
     $userUid = $user->getString();
 
-    $user_storage = $this->entityTypeManager->getStorage('user')
+    $user_storage = $this->entityTypeManager->getStorage("user")
       ->loadByProperties([
-        'uid' => $userUid,
+        "uid" => $userUid,
       ]);
 
     $user_storage = reset($user_storage);
     $user_storage->addRole($roleRequest);
     $user_storage->save();
+
+    if ($user_storage != NULL) {
+      $this->sendEmail("Accept your request role", "Dear user, your request to update roles to was accept.", $user_storage->getEmail());
+    }
 
     $messageToShow = 'There user: ' . $user_storage->label() . " has new roles.";
     $build = [];
@@ -125,33 +129,50 @@ final class RequestController extends ControllerBase {
      is th userself who canceled, not send an email.
      */
     if ($this->currentUser->id() != $userUid) {
-      $module = 'advanced_permissions_request';
-      $key = 'request_role';
-
-      $userDestination = $user_storage->getEmail();
       if ($user_storage != NULL) {
-        $params = [];
-        $params['message'] = "Dear user, your request to update roles to was denied ";
-        $params['subject'] = 'Dennied your request role';
-        $langcode = 'en';
-        $send = TRUE;
-        $result = $this->mailmanager->mail($module, $key, $userDestination, $langcode, $params, NULL, $send);
-        if ($result['result'] !== TRUE) {
-          $this->messenger()->addError('There was a problem sending your message and it was not sent.');
-        }
+        $this->sendEmail("Dennied your request role", "Dear user, your request to update roles to was denied ", $user_storage->getEmail());
       }
     }
 
 
     $node->delete();
 
-    $messageToShow = 'Your denied request role to user: ' . $user_storage->label();
+    $messageToShow = "Your denied request role to user: " . $user_storage->label();
     $build = [];
-    $build['content'] = [
-      '#type' => 'item',
-      '#markup' => $messageToShow,
+    $build["content"] = [
+      "#type" => "item",
+      "#markup" => $messageToShow,
     ];
     return $build;
+  }
+
+  /**
+   * SendEmail function.
+   *   Send email after denny or accept request.
+   *
+   * @param string $subject
+   *   The subject of email.
+   *
+   * @param string $message
+   *   The message of email.
+   *
+   * @param string $userDestinationMail
+   *   The email of user.
+   *
+   * @return void
+   */
+  public function sendEmail(string $subject, string $message, string $userDestinationMail) {
+    $module = "advanced_permissions_request";
+    $key = "request_role";
+    $params = [];
+    $params["subject"] = $subject;
+    $params["message"] = $message;
+    $langcode = "en";
+    $send = TRUE;
+    $result = $this->mailmanager->mail($module, $key, $userDestinationMail, $langcode, $params, NULL, $send);
+    if ($result["result"] !== TRUE) {
+      $this->messenger()->addError("There was a problem sending your message and it was not sent.");
+    }
   }
 
 }
