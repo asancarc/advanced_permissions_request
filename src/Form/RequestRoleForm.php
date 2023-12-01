@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\advanced_permissions_request\Form;
 
-use Drupal\advanced_permissions_request\Service;
+use Drupal\advanced_permissions_request\PermissionHandlerService;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -18,7 +18,7 @@ class RequestRoleForm extends FormBase {
   /**
    * Service handler.
    *
-   * @var \Drupal\advanced_permissions_request\Service
+   * @var \Drupal\advanced_permissions_request\PermissionHandlerService
    */
   protected $service;
 
@@ -39,7 +39,7 @@ class RequestRoleForm extends FormBase {
   /**
    * Class constructor.
    */
-  public function __construct(Service $service, AccountProxyInterface $current_user) {
+  public function __construct(PermissionHandlerService $service, AccountProxyInterface $current_user) {
     $this->service = $service;
     $this->currentUser = $current_user;
   }
@@ -75,6 +75,7 @@ class RequestRoleForm extends FormBase {
       $rolesUser = $this->service->getRolesFromUser($account);
 
       // WIP, try to show actual roles.
+      // If roles > 0
       $form['message'] = [
         '#type' => 'radios',
         '#title' => $this->t("Now, you have this roles"),

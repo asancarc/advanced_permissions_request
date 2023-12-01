@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Service to include support functions for manage module.
  */
-class Service implements ContainerInjectionInterface {
+class PermissionHandlerService implements ContainerInjectionInterface {
 
   /**
    * The entity.type.manager service.

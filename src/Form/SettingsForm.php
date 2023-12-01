@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\advanced_permissions_request\Form;
 
-use Drupal\advanced_permissions_request\Service;
+use Drupal\advanced_permissions_request\PermissionHandlerService;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -18,14 +18,14 @@ class SettingsForm extends ConfigFormBase {
   /**
    * Service handler.
    *
-   * @var \Drupal\advanced_permissions_request\Service
+   * @var \Drupal\advanced_permissions_request\PermissionHandlerService
    */
   protected $service;
 
   /**
    * Class constructor.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, Service $service) {
+  public function __construct(ConfigFactoryInterface $config_factory, PermissionHandlerService $service) {
     parent::__construct($config_factory);
     $this->service = $service;
   }
@@ -35,8 +35,8 @@ class SettingsForm extends ConfigFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('config.factory'),
-      $container->get('advanced_permissions_request.service')
+      $container->get("config.factory"),
+      $container->get("advanced_permissions_request.service")
     );
   }
 
@@ -44,14 +44,14 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'advanced_permissions_request_settings';
+    return "advanced_permissions_request_settings";
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['advanced_permissions_request.settings'];
+    return ["advanced_permissions_request.settings"];
   }
 
   /**
@@ -60,7 +60,7 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Get all roles from the system and remove basic roles.
     $entityType = $this->service->getEntityTypeMananger();
-    $roles = $entityType->getStorage('user_role')->loadMultiple();
+    $roles = $entityType->getStorage("user_role")->loadMultiple();
     unset($roles["anonymous"]);
     unset($roles["authenticated"]);
 
@@ -71,14 +71,14 @@ class SettingsForm extends ConfigFormBase {
     }
 
     // Get default values from config.
-    $config = $this->config('advanced_permissions_request.settings');
-    $selectedValues = $config->get('roles_to_offer');
+    $config = $this->config("advanced_permissions_request.settings");
+    $selectedValues = $config->get("roles_to_offer");
 
-    $form['roles_to_offer'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Please select what roles offer to users'),
-      '#options' => $rolesToOffer,
-      '#default_value' => $selectedValues,
+    $form["roles_to_offer"] = [
+      "#type" => "checkboxes",
+      "#title" => $this->t("Please select what roles offer to users"),
+      "#options" => $rolesToOffer,
+      "#default_value" => $selectedValues,
     ];
 
     return parent::buildForm($form, $form_state);
@@ -90,17 +90,17 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     // Check if any option is selected.
-    $rolesToOffer = array_filter($form_state->getValue('roles_to_offer'));
+    $rolesToOffer = array_filter($form_state->getValue("roles_to_offer"));
 
     if (count($rolesToOffer) != 0) {
       // If all values are 0, no values checked.
-      $this->config('advanced_permissions_request.settings')
-        ->set('roles_to_offer', $rolesToOffer)
+      $this->config("advanced_permissions_request.settings")
+        ->set("roles_to_offer", $rolesToOffer)
         ->save();
     }
     else {
-      $this->config('advanced_permissions_request.settings')
-        ->set('roles_to_offer', NULL)
+      $this->config("advanced_permissions_request.settings")
+        ->set("roles_to_offer", NULL)
         ->save();
     }
 
