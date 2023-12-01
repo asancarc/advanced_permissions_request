@@ -62,6 +62,9 @@ final class RequestController extends ControllerBase {
   /**
    * Accept Request function.
    *
+   *   This function get node, set published, agree new role to user created
+   *   request and finally send email to user to notice this request was accept.
+   *
    * @param int $node
    *   The id of node.
    */
@@ -105,6 +108,10 @@ final class RequestController extends ControllerBase {
   /**
    * Denny Request function.
    *
+   *   This funcion get user from node, compare with the user create denied
+   *   process,if is the same user, not send email. If is differents user,
+   *   send email. Finally, delete request node.
+   *
    * @param int $node
    *   The id of node.
    *
@@ -125,15 +132,12 @@ final class RequestController extends ControllerBase {
     $user_storage = reset($user_storage);
 
     /*
-     If user was has canceled request was been the same from request content type,
-     is th userself who canceled, not send an email.
+    If user was has canceled request was been the same from request content
+    type, is th userself who canceled, not send an email.
      */
-    if ($this->currentUser->id() != $userUid) {
-      if ($user_storage != NULL) {
-        $this->sendEmail("Dennied your request role", "Dear user, your request to update roles to was denied ", $user_storage->getEmail());
-      }
+    if ($user_storage != NULL && $this->currentUser->id() != $userUid) {
+      $this->sendEmail("Dennied your request role", "Dear user, your request to update roles to was denied ", $user_storage->getEmail());
     }
-
 
     $node->delete();
 
@@ -148,18 +152,18 @@ final class RequestController extends ControllerBase {
 
   /**
    * SendEmail function.
+   *
    *   Send email after denny or accept request.
    *
    * @param string $subject
    *   The subject of email.
-   *
    * @param string $message
    *   The message of email.
-   *
    * @param string $userDestinationMail
    *   The email of user.
    *
    * @return void
+   *   No return.
    */
   public function sendEmail(string $subject, string $message, string $userDestinationMail) {
     $module = "advanced_permissions_request";
