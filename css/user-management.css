@@ -10,3 +10,7 @@
 .toolbar-bar .toolbar-icon-advanced-permissions-request-request-roles.is-active:before {
   background-image: url(../icons/icons8-duty-64.png);
 }
+
+.advanced-permissions-request-request-role #edit-message--wrapper > legend > span {
+  color: var(--color--white);
+}
