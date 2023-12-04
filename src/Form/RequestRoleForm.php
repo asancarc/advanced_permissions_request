@@ -74,8 +74,8 @@ class RequestRoleForm extends FormBase {
       $this->userRequest = $account;
       $rolesUser = $this->service->getRolesFromUser($account);
 
-      // Show use actual roles.
-      if (sizeOf($rolesUser) > 0) {
+      // Show user actual roles.
+      if (count($rolesUser) > 0) {
         $form['message'] = [
           '#type' => 'radios',
           '#title' => $this->t("Now, you have this roles"),

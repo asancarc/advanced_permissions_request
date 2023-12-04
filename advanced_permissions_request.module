@@ -5,6 +5,8 @@
  * Primary module hooks for Advanced permissions request module.
  */
 
+use Drupal\Core\Routing\RouteMatchInterface;
+
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -54,5 +56,23 @@ function advanced_permissions_request_mail($key, &$message, $params) {
       $message['subject'] = $params['subject'];
       $message['body'][] = $params['message'];
       break;
+  }
+}
+
+/**
+ * Implements hook_help().
+ */
+function advanced_permissions_request_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.advanced_permissions_request':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The advanced permissions request offers the possibility for users to claim to site administrators a higher role') . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<p>' . t('Once these roles are selected, users will be able to request a higher role from their user profile.') . '</p>';
+      $output .= '<p>' . t('Once users have submitted a request for a new role, system administrators will be able to view the list of these requests.') . '</p>';
+      $output .= '<p>' . t('At this point, administrators will have the discretion to decide whether or not to grant the role requested by the user.') . '</p>';
+      $output .= '<p>' . t('If site admins have declined/accept the users request, they will receive an email notification informing them of this.') . '</p>';
+      return $output;
   }
 }
