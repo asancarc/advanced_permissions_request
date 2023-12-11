@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\advanced_permissions_request\Controller;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Mail\MailManager;
@@ -40,12 +41,20 @@ final class RequestController extends ControllerBase {
   protected $currentUser;
 
   /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * Class constructor.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MailManager $mailManager, AccountProxyInterface $current_user) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MailManager $mailManager, AccountProxyInterface $current_user, ConfigFactoryInterface $configFactory) {
     $this->entityTypeManager = $entity_type_manager;
     $this->mailmanager = $mailManager;
     $this->currentUser = $current_user;
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -55,7 +64,8 @@ final class RequestController extends ControllerBase {
     return new static(
       $container->get("entity_type.manager"),
       $container->get("plugin.manager.mail"),
-      $container->get("current_user")
+      $container->get("current_user"),
+      $container->get("config.factory"),
     );
   }
 
@@ -92,7 +102,9 @@ final class RequestController extends ControllerBase {
     $user_storage->save();
 
     if ($user_storage != NULL) {
-      $this->sendEmail("Accept your request role", "Dear user, your request to update roles to was accept.", $user_storage->getEmail());
+      $subject = $this->configFactory->getEditable("advanced_permissions_request.settings")->get("subjectemailaccept");
+      $body = $this->configFactory->getEditable("advanced_permissions_request.settings")->get("bodyemailaccept");
+      $this->sendEmail($subject, $body, $user_storage->getEmail());
     }
 
     $messageToShow = 'There user: ' . $user_storage->label() . " has new roles.";
@@ -136,7 +148,9 @@ final class RequestController extends ControllerBase {
     type, is th userself who canceled, not send an email.
      */
     if ($user_storage != NULL && $this->currentUser->id() != $userUid) {
-      $this->sendEmail("Dennied your request role", "Dear user, your request to update roles to was denied ", $user_storage->getEmail());
+      $subject = $this->configFactory->getEditable("advanced_permissions_request.settings")->get("subjectemaildenny");
+      $body = $this->configFactory->getEditable("advanced_permissions_request.settings")->get("bodyemaildenny");
+      $this->sendEmail($subject, $body, $user_storage->getEmail());
     }
 
     $node->delete();

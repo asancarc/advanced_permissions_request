@@ -1,0 +1,4 @@
+subjectemailaccept: "Accept your request role"
+bodyemailaccept: "Dear user, your request to update roles to was accept."
+subjectemaildenny: "Dennied your request role"
+bodyemaildenny: "Dear user, your request to update roles to was denied"

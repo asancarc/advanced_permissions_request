@@ -109,9 +109,8 @@ class RequestRoleForm extends FormBase {
         '#value' => $this->t('Send'),
       ];
 
-      return $form;
     }
-
+    return $form;
   }
 
   /**

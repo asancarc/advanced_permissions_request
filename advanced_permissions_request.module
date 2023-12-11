@@ -5,12 +5,11 @@
  * Primary module hooks for Advanced permissions request module.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function advanced_permissions_request_form_user_form_alter(&$form) {
+  $message = "";
   // Check if config form has any value.
   $rolesToOffer = \Drupal::config('advanced_permissions_request.settings')->get('roles_to_offer');
 
@@ -22,15 +21,15 @@ function advanced_permissions_request_form_user_form_alter(&$form) {
   $requestPending = \Drupal::service('advanced_permissions_request.service')->checkUserRolesRequest($userId);
 
   if ($rolesToOffer != NULL && !str_contains($rolesLoguedUser, 'administrator') && !is_array($requestPending)) {
-    $mesage = "<a class='button button--primary' href=/user/" . $userId . "/request-roles>Request new roles</a>";
+    $message = "<a class='button button--primary' href=/user/" . $userId . "/request-roles>Request new roles</a>";
   }
   elseif (is_array($requestPending)) {
-    $mesage = "<a class='button button--primary' href=/advanced-permissions-request/" . $requestPending["nid"] . "/denny>You have pending old request to " . $requestPending["role"] . ", do you want to cancel</a>";
+    $message = "<a class='button button--primary' href=/advanced-permissions-request/" . $requestPending["nid"] . "/denny>You have pending old request to " . $requestPending["role"] . ", do you want to cancel</a>";
   }
 
   $form['request_role'] = [
     '#type' => "markup",
-    '#markup' => $mesage,
+    '#markup' => $message,
     '#weight' => -100,
   ];
 
@@ -62,7 +61,7 @@ function advanced_permissions_request_mail($key, &$message, $params) {
 /**
  * Implements hook_help().
  */
-function advanced_permissions_request_help($route_name, RouteMatchInterface $route_match) {
+function advanced_permissions_request_help($route_name) {
   switch ($route_name) {
     case 'help.page.advanced_permissions_request':
       $output = '';

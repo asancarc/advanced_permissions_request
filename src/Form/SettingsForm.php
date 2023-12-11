@@ -81,6 +81,56 @@ class SettingsForm extends ConfigFormBase {
       "#default_value" => $selectedValues,
     ];
 
+    // Accept new request role email information section.
+    $form["accept"] = [
+      "#type" => "details",
+      "#title" => $this
+        ->t("Accept role email information"),
+      "#collapsible" => TRUE,
+      "#collapsed" => TRUE,
+    ];
+    $form["accept"]["subjectemailaccept"] = [
+      "#type" => "textfield",
+      "#title" => $this
+        ->t("Subject"),
+      "#default_value" => $config->get("subjectemailaccept"),
+      "#size" => 60,
+      "#maxlength" => 128,
+      "#required" => TRUE,
+    ];
+    $form["accept"]["bodyemailaccept"] = [
+      "#type" => "textarea",
+      "#title" => $this
+        ->t("Body"),
+      "#default_value" => $config->get("bodyemailaccept"),
+      "#required" => TRUE,
+    ];
+
+    // Denny new request role email information section.
+    $form['denny'] = [
+      "#type" => "details",
+      "#title" => $this
+        ->t("Denny role email information"),
+      "#collapsible" => TRUE,
+      "#collapsed" => TRUE,
+    ];
+    $form["denny"]["subjectemaildenny"] = [
+      "#type" => "textfield",
+      "#title" => $this
+        ->t("Subject"),
+      "#default_value" => $config->get("subjectemaildenny"),
+      "#size" => 60,
+      "#maxlength" => 128,
+      "#required" => TRUE,
+    ];
+    $form["denny"]["bodyemaildenny"] = [
+      "#type" => "textarea",
+      "#title" => $this
+        ->t("Body"),
+      "#default_value" => $config->get("bodyemaildenny"),
+      "#required" => TRUE,
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -98,11 +148,20 @@ class SettingsForm extends ConfigFormBase {
         ->set("roles_to_offer", $rolesToOffer)
         ->save();
     }
-    else {
-      $this->config("advanced_permissions_request.settings")
-        ->set("roles_to_offer", NULL)
-        ->save();
-    }
+
+    // Email information fields.
+    $this->config("advanced_permissions_request.settings")
+      ->set("subjectemailaccept", $form_state->getValue("subjectemailaccept"))
+      ->save();
+    $this->config("advanced_permissions_request.settings")
+      ->set("bodyemailaccept", $form_state->getValue("bodyemailaccept"))
+      ->save();
+    $this->config("advanced_permissions_request.settings")
+      ->set("subjectemaildenny", $form_state->getValue("subjectemaildenny"))
+      ->save();
+    $this->config("advanced_permissions_request.settings")
+      ->set("bodyemaildenny", $form_state->getValue("bodyemaildenny"))
+      ->save();
 
     parent::submitForm($form, $form_state);
   }
