@@ -34,6 +34,8 @@ The installation of this module is like other Drupal modules.
 3. Enable the system roles that you plan to offer to the rest of the users. If none are selected, 
    users will not have the option to request a higher role from administrators. 
    (`/admin/config/system/advanced-permissions-request`)
+   There are also fields where you can put both the subject and the body of the emails to be sent,
+   if the new rolo request is accepted or denied.
 
 ## HOW IT WORKS
 
